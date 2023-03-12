@@ -56,39 +56,62 @@ window.addEventListener('DOMContentLoaded', function () {
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
-            seconds = timer.querySelector('.seconds');
+            seconds = timer.querySelector('.seconds'),
             timeInterval = setInterval(updateClock, 1000);
 
         function updateClock () {
             let t = getTimeRemaining(endtime);
+
+            function sumZero (num) {
+                if (num <= 9) {
+                    return '0' + num;
+                } else {
+                    return num;
+                }
+            }
+
+            hours.textContent = sumZero(t.hours);
+            minutes.textContent = sumZero(t.minutes);
+            seconds.textContent = sumZero(t.seconds);
 
             if (t.total <= 0) {
                 clearInterval(timeInterval);
                 hours.textContent = '00';
                 minutes.textContent = '00';
                 seconds.textContent = '00';
-            } else {
-                if (t.hours <= 9) {
-                    hours.textContent = '0' + t.hours;
-                } else {
-                    hours.textContent = t.hours;
-                }
-
-                if (t.minutes <= 9) {
-                    minutes.textContent = '0' + t.minutes;
-                } else {
-                    minutes.textContent = t.minutes;
-                }
-
-                if (t.seconds <= 9) {
-                    seconds.textContent = '0' + t.seconds;
-                } else {
-                    seconds.textContent = t.seconds;
-                }
             }
         }
 
     }
 
     setClock('timer', deadLine);
+
+    //Modal
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close'),
+        btnDescription = document.querySelectorAll('.description-btn');
+
+    btnDescription.forEach(function (item) {
+        item.addEventListener('click', function () {
+            overlay.style.display = 'block';
+        });
+    });
+
+    more.addEventListener('click', function () {
+        overlay.style.display = 'block';
+        more.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+    });
+
+    close.addEventListener('click', function () {
+        overlay.style.display = 'none';
+        more.classList.remove('more-splash');
+        document.body.style.overflow = '';
+    });
+    
+
+
 });
+
